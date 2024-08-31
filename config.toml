@@ -43,7 +43,7 @@ logoHomeLink = "/"
 [languages.en.menu]
 [[languages.en.menu.main]]
 identifier = "about"
-name = "About"
+name = "About Me"
 url = "/about"
 
 [module]
