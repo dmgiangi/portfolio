@@ -13,7 +13,7 @@ autoCover = false
 showLastUpdated = true
 enableGitInfo = true
 readingTime = true
-Toc = false
+Toc = true
 TocTitle = "Table of Contents"
 
 [languages]

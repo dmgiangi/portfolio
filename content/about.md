@@ -33,9 +33,9 @@ My long-term goal is to work in a stimulating environment where colleagues can d
 I’d like to conclude with a quotethat deeply inspires me:
 
 > _蔵焼けて – 障るものなき – 月見哉_ \
-> _"The barn’s burnt down – now I can see the moon"_ \
+> _"The barn’s burnt down – now I can see the moon"_
 
-<cite>Mizuta Masahide</cite>
+cit. <cite>Mizuta Masahide</cite>
 
 ---
 
