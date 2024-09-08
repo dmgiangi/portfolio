@@ -15,7 +15,7 @@ permissions:
   pull-requests: write
 
 env:
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: '/api'
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: 'api'
   PYTHON_VERSION: '3.8.x'
 
 jobs:
