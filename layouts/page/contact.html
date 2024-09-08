@@ -31,14 +31,18 @@
             <textarea required id="message" name="message" placeholder="Your message"></textarea>
         </div>
 
-        <button type="submit">Submit</button>
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <button id="submit-button" type="submit">Submit</button>
+            <span id="form-response"></span>
+        </div>
     </form>
-
-    <div id="form-response"></div>
 
     <script>
         document.getElementById('contact-form').addEventListener('submit', async function (event) {
             event.preventDefault();
+
+            const submitButton = document.getElementById('submit-button');
+            submitButton.disabled = true;
 
             const formData = {
                 name: document.getElementById('name').value,
@@ -46,14 +50,26 @@
                 message: document.getElementById('message').value
             };
 
-            const response = await fetch('{{ .Site.Params.apiBasePath }}/mail', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(formData)
-            });
+            try {
+                const response = await fetch('{{ .Site.Params.apiBasePath }}/mail', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(formData)
+                });
 
-            const result = await response.json();
-            document.getElementById('form-response').innerText = result.message;
+                if (response.status === 201) {
+                    document.getElementById('form-response').innerText = 'Successfully sent.';
+                    document.getElementById('form-response').className = 'success-message';
+                } else {
+                    document.getElementById('form-response').innerText = 'An error occurred.';
+                    document.getElementById('form-response').className = 'error-message';
+                }
+            } catch (error) {
+                document.getElementById('form-response').className = 'error-message';
+                document.getElementById('form-response').innerText = 'An error occurred.';
+            } finally {
+                submitButton.disabled = false;
+            }
         });
     </script>
 
