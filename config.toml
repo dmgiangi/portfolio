@@ -49,3 +49,7 @@ url = "/about"
 [module]
 [[module.imports]]
 path = 'terminal'
+
+[services]
+[services.disqus]
+shortname = 'dmgiangi'
