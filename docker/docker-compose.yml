@@ -1,13 +1,18 @@
 services:
   portfolio:
     image: ghcr.io/dmgiangi/portfolio:latest
-    ports:
-      - "8080:80"
     restart: always
     pull_policy: always
+    networks:
+      - proxy-net
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.keycloak.rule=Host(`${DOMAIN_ROOT}`)"
-      - "traefik.http.routers.keycloak.entrypoints=websecure"
-      - "traefik.http.routers.keycloak.tls.certresolver=myresolver"
-      - "traefik.http.services.keycloak.loadbalancer.server.port=8080"
+      - "traefik.http.routers.portfolio.rule=Host(`${DOMAIN_ROOT}`)"
+      - "traefik.http.routers.portfolio.entrypoints=websecure"
+      - "traefik.http.routers.portfolio.tls.certresolver=myresolver"
+      - "traefik.http.services.portfolio.loadbalancer.server.port=80"
+
+networks:
+  proxy-net:
+    external: true
+    name: proxy-net
