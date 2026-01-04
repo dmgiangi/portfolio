@@ -7,7 +7,7 @@ services:
       - proxy-net
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.portfolio.rule=Host(`${DOMAIN_ROOT}`)"
+      - "traefik.http.routers.portfolio.rule=Host(`dmgiangi.dev`)"
       - "traefik.http.routers.portfolio.entrypoints=websecure"
       - "traefik.http.routers.portfolio.tls.certresolver=myresolver"
       - "traefik.http.services.portfolio.loadbalancer.server.port=80"
