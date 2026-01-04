@@ -1,6 +1,6 @@
 services:
   portfolio:
-    image: ghcr.io/dmgiangi/portfolio:${PORTFOLIO_VERSION:-latest}
+    image: ghcr.io/dmgiangi/portfolio:latest
     ports:
       - "8080:80"
     restart: always
