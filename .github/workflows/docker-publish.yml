@@ -96,3 +96,14 @@ jobs:
           TAGS: ${{ steps.meta.outputs.tags }}
           DIGEST: ${{ steps.build-and-push.outputs.digest }}
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
+
+      - name: Call Deployment Webhook
+        if: ${{ github.event_name != 'pull_request' }}
+        env:
+          WEBHOOK_URL: ${{ secrets.DEPLOYMENT_WEBHOOK_URL }}
+        run: |
+          if [ -n "$WEBHOOK_URL" ]; then
+            curl -X POST "$WEBHOOK_URL"
+          else
+            echo "DEPLOYMENT_WEBHOOK_URL secret is not set, skipping webhook call."
+          fi
