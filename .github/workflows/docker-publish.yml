@@ -74,15 +74,20 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Call Deployment Webhook
+      - name: Trigger calcifer workflow
         if: ${{ github.event_name != 'pull_request' }}
         env:
-          WEBHOOK_URL: ${{ secrets.DEPLOYMENT_WEBHOOK_URL }}
+          TOKEN: ${{ secrets.CALCIFER_ACTION_TRIGGER }}
+          TARGET_REPO: ${{ github.repository_owner }}/calcifer
         run: |
-          if [ -n "$WEBHOOK_URL" ]; then
-            if ! curl -fsS -X POST "$WEBHOOK_URL"; then
-              echo "Deployment webhook failed, continuing."
+          if [ -n "$TOKEN" ]; then
+            if ! curl -fsS -X POST \
+              -H "Accept: application/vnd.github+json" \
+              -H "Authorization: Bearer $TOKEN" \
+              https://api.github.com/repos/"$TARGET_REPO"/dispatches \
+              -d "{\"event_type\":\"image-published\",\"client_payload\":{\"image\":\"${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}\",\"tag\":\"${GITHUB_SHA}\",\"sha\":\"${GITHUB_SHA}\"}}"; then
+              echo "Dispatch to $TARGET_REPO failed, continuing."
             fi
           else
-            echo "DEPLOYMENT_WEBHOOK_URL secret is not set, skipping webhook call."
+            echo "CALCIFER_ACTION_TRIGGER secret is not set, skipping dispatch."
           fi
