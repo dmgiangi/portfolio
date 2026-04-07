@@ -1,0 +1,7 @@
+.git
+.github
+.idea
+README.md
+*.log
+node_modules
+public
