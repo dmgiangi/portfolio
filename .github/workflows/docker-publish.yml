@@ -81,12 +81,16 @@ jobs:
           TARGET_REPO: ${{ github.repository_owner }}/calcifer
         run: |
           if [ -n "$TOKEN" ]; then
-            if ! curl -fsS -X POST \
+            status="$(curl -sS -o /tmp/dispatch_response.json -w "%{http_code}" -X POST \
               -H "Accept: application/vnd.github+json" \
               -H "Authorization: Bearer $TOKEN" \
               https://api.github.com/repos/"$TARGET_REPO"/dispatches \
-              -d "{\"event_type\":\"image-published\",\"client_payload\":{\"image\":\"${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}\",\"tag\":\"${GITHUB_SHA}\",\"sha\":\"${GITHUB_SHA}\"}}"; then
-              echo "Dispatch to $TARGET_REPO failed, continuing."
+              -d "{\"event_type\":\"image-published\",\"client_payload\":{\"image\":\"${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}\",\"tag\":\"${GITHUB_SHA}\",\"sha\":\"${GITHUB_SHA}\"}}")"
+            if [ "$status" -ge 200 ] && [ "$status" -lt 300 ]; then
+              echo "Dispatch to $TARGET_REPO accepted (HTTP $status)."
+            else
+              echo "Dispatch to $TARGET_REPO failed (HTTP $status), continuing."
+              cat /tmp/dispatch_response.json
             fi
           else
             echo "CALCIFER_ACTION_TRIGGER secret is not set, skipping dispatch."
