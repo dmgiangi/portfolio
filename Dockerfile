@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # Stage 1: Build static site with pinned Hugo extended
-FROM klakegg/hugo:0.125.7-ext-alpine AS builder
+FROM hugomods/hugo:exts-0.125.7 AS builder
 
 WORKDIR /src
 COPY . .
